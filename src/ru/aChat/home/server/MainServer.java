@@ -18,8 +18,7 @@ class MainServer {
         return clients;
     }
 
-    MainServer() throws SQLException {
-
+    MainServer() {
         ServerSocket server = null;
         Socket socket = null;
         clients = new Vector<>();
