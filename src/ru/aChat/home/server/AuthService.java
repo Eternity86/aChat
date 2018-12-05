@@ -6,26 +6,38 @@ class AuthService {
     private static Connection connection;
     private static Statement stmt;
 
-    static void connect() throws SQLException {
+    static void connect() {
         try {
             Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection(org.sqlite.JDBC.PREFIX + "mainDB25102018.db");
-            System.out.println("БД подключена!");
-            stmt = connection.createStatement();
+            connection = DriverManager.getConnection(org.sqlite.JDBC.PREFIX + "users.db");
             System.out.println("Соединение с БД установлено!");
-        } catch (ClassNotFoundException e) {
+            stmt = connection.createStatement();
+            System.out.println("БД готова для получения SQL-запросов!");
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static void addUser(String login, String pass, String nick) throws SQLException {
-        String sql = String.format("INSERT INTO USERS (login, password, nickname)" +
-                "VALUES ('%s','%s','%s')", login, pass.hashCode(), nick);
-        stmt.execute(sql);
+    public static void addUser(String login, String pass, String nick) {
+        String query = "INSERT INTO main (login, password, nickname) VALUES (?, ?, ?)";
+        PreparedStatement ps = null;
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, login);
+            ps.setInt(2, pass.hashCode());
+            ps.setString(3, nick);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+//        String sql = String.format("INSERT INTO USERS (login, password, nickname)" +
+//                "VALUES ('%s','%s','%s')", login, pass.hashCode(), nick);
+//        stmt.execute(sql);
+
     }
 
     public static String getNickByLoginAndPass(String login, String pass) {
-        String sql = String.format("SELECT nickname, password FROM USERS" +
+        String sql = String.format("SELECT nickname, password FROM main" +
                 " WHERE login = '%s'", login);
         try {
             int myHash = pass.hashCode();
@@ -35,7 +47,6 @@ class AuthService {
             if(rs.next()) {
                 String nick = rs.getString(1);
                 int dbHash = rs.getInt(2);
-
                 if(myHash == dbHash) {
                     return nick;
                 }
