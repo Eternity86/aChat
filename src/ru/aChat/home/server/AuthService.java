@@ -3,12 +3,13 @@ package ru.aChat.home.server;
 import java.sql.*;
 
 class AuthService {
+    private static final String JDBC_DRIVER = "org.sqlite.JDBC";
     private static Connection connection;
     private static Statement stmt;
 
     static void connect() {
         try {
-            Class.forName("org.sqlite.JDBC");
+            Class.forName(JDBC_DRIVER);
             connection = DriverManager.getConnection(org.sqlite.JDBC.PREFIX + "users.db");
             System.out.println("Соединение с БД установлено!");
             stmt = connection.createStatement();
@@ -20,7 +21,7 @@ class AuthService {
 
     public static void addUser(String login, String pass, String nick) {
         String query = "INSERT INTO main (login, password, nickname) VALUES (?, ?, ?)";
-        PreparedStatement ps = null;
+        PreparedStatement ps;
         try {
             ps = connection.prepareStatement(query);
             ps.setString(1, login);
