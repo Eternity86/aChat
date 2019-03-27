@@ -4,7 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 class ClientHandler {
@@ -15,7 +15,7 @@ class ClientHandler {
     private DataInputStream in;
     private String nick;
 
-    private Vector<String> blackList;
+    private List<String> blackList;
 
     String getNick() {
         return nick;
@@ -35,7 +35,6 @@ class ClientHandler {
     }
 
     ClientHandler(MainServer server, Socket socket) {
-
         try {
             this.server = server;
             this.socket = socket;
@@ -82,8 +81,12 @@ class ClientHandler {
                             if (str.startsWith("/blacklist ")) {
                                 // добавить проверку, если пользователь уже в чёрном списке
                                 String[] tokens = str.split("\\s");
-                                blackList.add(tokens[1]);
-                                sendMsg("Вы добавили пользователя " + tokens[1] + " в черный список");
+                                if (checkBlackList(tokens[1])) {
+                                    sendMsg("Пользователь " + tokens[1] + " уже в чёрном списке!");
+                                } else {
+                                    blackList.add(tokens[1]);
+                                    sendMsg("Вы добавили пользователя " + tokens[1] + " в черный список!");
+                                }
                             }
                         } else {
                             server.broadCastMsg(ClientHandler.this,nick + ": " + str);
@@ -113,7 +116,6 @@ class ClientHandler {
                     System.out.println(nick + " покинул чат");
                 }
             }).start();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
