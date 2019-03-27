@@ -19,6 +19,8 @@ class AuthService {
         }
     }
 
+    // добавление нового пользователя в БД
+    // нужно добавить проверку на существование ника (чтобы избежать двойников)
     public static void addUser(String login, String pass, String nick) {
         String query = "INSERT INTO main (login, password, nickname) VALUES (?, ?, ?)";
         PreparedStatement ps;

@@ -3,8 +3,6 @@ package ru.aChat.home.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
-import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Vector;
 
@@ -72,7 +70,7 @@ class MainServer {
         from.sendMsg("Пользователя " + nickTo + " нет в чате!");
     }
 
-    void broadcastClientsList() {
+    private void broadcastClientsList() {
         StringBuilder sb = new StringBuilder();
         sb.append("/clientlist ");
         for (ClientHandler o: clients) {

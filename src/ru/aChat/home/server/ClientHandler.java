@@ -79,7 +79,6 @@ class ClientHandler {
                                 server.privateMsg(this, tokens[1], tokens[2]);
                             }
                             if (str.startsWith("/blacklist ")) {
-                                // добавить проверку, если пользователь уже в чёрном списке
                                 String[] tokens = str.split("\\s");
                                 if (checkBlackList(tokens[1])) {
                                     sendMsg("Пользователь " + tokens[1] + " уже в чёрном списке!");
@@ -90,11 +89,11 @@ class ClientHandler {
                             }
                         } else {
                             server.broadCastMsg(ClientHandler.this,nick + ": " + str);
+                            System.out.println(nick + ": " + str);
                         }
                     }
                 } catch (IOException e) {
-                    System.out.println(e.getMessage());
-                    //e.printStackTrace();
+                    e.printStackTrace();
                 } finally {
                     try {
                         in.close();
