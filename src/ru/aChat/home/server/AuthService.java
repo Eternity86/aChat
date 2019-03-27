@@ -39,6 +39,16 @@ class AuthService {
 
     }
 
+    public static void changeNick(String nick, String newNick) {
+//        String query = String.format("UPDATE main SET nickname = '%s' WHERE nickname = '%s'", newNick, nick);
+//        PreparedStatement ps;
+//        try {
+//            ps = connection.prepareStatement(query);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+    }
+
     public static String getNickByLoginAndPass(String login, String pass) {
         String sql = String.format("SELECT nickname, password FROM main" +
                 " WHERE login = '%s'", login);
