@@ -83,6 +83,17 @@ public class Controller {
                             setAuthorized(true);
                             String[] tokens = str.split(" ");
                             myNick = tokens[1];
+                            try {
+                                BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(myNick + ".txt")));
+                                String temp;
+                                int counter = 0;
+                                while ((temp = in.readLine()) != null && counter < 100) {
+                                    textArea.appendText(String.format("%s%s", temp, System.lineSeparator()));
+                                    counter++;
+                                }
+                            } catch (IOException e) {
+                                System.out.println("Ошибка при обработке файла");
+                            }
                             break;
                         } else {
                             textArea.appendText(String.format("%s%s", str, System.lineSeparator()));
