@@ -8,6 +8,8 @@ import javafx.scene.layout.VBox;
 
 import java.io.*;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Controller {
 
@@ -107,11 +109,13 @@ public class Controller {
                                     });
                                 }
                             } else {
-                                textArea.appendText(String.format("%s%s", str, System.lineSeparator()));
+                                Date date = new Date();
+                                SimpleDateFormat formatForDate = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss zz");
+                                textArea.appendText(String.format("%s %s%s", formatForDate.format(date), str, System.lineSeparator()));
                                 try {
                                     String fileName = myNick + ".txt";
                                     BufferedWriter out = new BufferedWriter(new FileWriter(fileName, true));
-                                    out.write(str + System.lineSeparator());
+                                    out.write(formatForDate.format(date) + " " + str + System.lineSeparator());
                                     out.close();
                                 } catch (IOException e) {
                                     System.out.println("Ошибка в процессе записи файла");

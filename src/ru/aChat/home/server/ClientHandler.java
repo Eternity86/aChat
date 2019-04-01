@@ -48,7 +48,7 @@ class ClientHandler {
                     while (true) {
                         String str = in.readUTF();
                         if(str.startsWith("/auth")) {
-                            String[] tokens = str.split("\\s");
+                            String[] tokens = str.split(" ");
                             String newNick = AuthService.getNickByLoginAndPass(tokens[1], tokens[2]);
                             if(newNick != null) {
                                 if (isNickBusy(server.getClients(), newNick)) {
