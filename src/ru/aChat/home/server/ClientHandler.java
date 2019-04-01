@@ -54,8 +54,8 @@ class ClientHandler {
                                 if (isNickBusy(server.getClients(), newNick)) {
                                     sendMsg("Учётная запись уже используется!");
                                 } else {
-                                    sendMsg("/authok");
                                     nick = newNick;
+                                    sendMsg("/authok " + nick);
                                     server.subscribe(ClientHandler.this);
                                     server.broadCastMsg(ClientHandler.this, nick + " зашёл в чат");
                                     break;
