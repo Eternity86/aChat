@@ -84,13 +84,14 @@ public class Controller {
                             String[] tokens = str.split(" ");
                             myNick = tokens[1];
                             try {
-                                BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(myNick + ".txt")));
+                                BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream("history_" + myNick + ".txt")));
                                 String temp;
                                 int counter = 0;
                                 while ((temp = in.readLine()) != null && counter < 100) {
                                     textArea.appendText(String.format("%s%s", temp, System.lineSeparator()));
                                     counter++;
                                 }
+                                in.close();
                             } catch (IOException e) {
                                 System.out.println("Ошибка при обработке файла");
                             }
@@ -124,7 +125,7 @@ public class Controller {
                                 SimpleDateFormat formatForDate = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss zz");
                                 textArea.appendText(String.format("%s %s%s", formatForDate.format(date), str, System.lineSeparator()));
                                 try {
-                                    String fileName = myNick + ".txt";
+                                    String fileName = "history_" + myNick + ".txt";
                                     BufferedWriter out = new BufferedWriter(new FileWriter(fileName, true));
                                     out.write(formatForDate.format(date) + " " + str + System.lineSeparator());
                                     out.close();
