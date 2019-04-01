@@ -6,9 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
 public class Controller {
@@ -38,19 +36,18 @@ public class Controller {
     @FXML
     TextField textField;
 
-    private Socket socket;
-
-    private DataInputStream in;
-    private DataOutputStream out;
-
-    private boolean isAuthorized;
-
     private final String IP_ADDRESS = "localhost";
     private final int PORT = 8189;
 
+    private Socket socket;
+    private DataInputStream in;
+    private DataOutputStream out;
+    private String myNick;
+
+    private boolean isAuthorized;
+
     private void setAuthorized(boolean isAuthorized) {
         this.isAuthorized = isAuthorized;
-
         if(!isAuthorized) {
             Platform.runLater(() -> {
                 upperPanel.setVisible(true);
@@ -75,7 +72,6 @@ public class Controller {
             socket = new Socket(IP_ADDRESS, PORT);
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
-
             new Thread(() -> {
                 try {
                     // цикл для авторизации
@@ -83,6 +79,8 @@ public class Controller {
                         String str = in.readUTF();
                         if(str.startsWith("/authok")) {
                             setAuthorized(true);
+                            String[] tokens = str.split(" ");
+                            myNick = tokens[1];
                             break;
                         } else {
                             textArea.appendText(String.format("%s%s", str, System.lineSeparator()));
@@ -110,6 +108,15 @@ public class Controller {
                                 }
                             } else {
                                 textArea.appendText(String.format("%s%s", str, System.lineSeparator()));
+                                try {
+                                    String fileName = myNick + ".txt";
+                                    BufferedWriter out = new BufferedWriter(new FileWriter(fileName, true));
+                                    out.write(str + System.lineSeparator());
+                                    out.close();
+                                } catch (IOException e) {
+                                    System.out.println("Ошибка в процессе записи файла");
+                                }
+
                             }
                         }
                     }
@@ -146,12 +153,9 @@ public class Controller {
         }
         try {
             out.writeUTF("/auth " + loginField.getText() + " " + passField.getText());
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    loginField.clear();
-                    passField.clear();
-                }
+            Platform.runLater(() -> {
+                loginField.clear();
+                passField.clear();
             });
         } catch (IOException e) {
             e.printStackTrace();
