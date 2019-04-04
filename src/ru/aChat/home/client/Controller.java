@@ -83,6 +83,7 @@ public class Controller {
                             setAuthorized(true);
                             String[] tokens = str.split(" ");
                             myNick = tokens[1];
+                            textArea.clear();
                             try {
                                 BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream("history_" + myNick + ".txt")));
                                 String temp;
@@ -122,7 +123,7 @@ public class Controller {
                                 }
                             } else {
                                 Date date = new Date();
-                                SimpleDateFormat formatForDate = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss zz");
+                                SimpleDateFormat formatForDate = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss z");
                                 textArea.appendText(String.format("%s %s%s", formatForDate.format(date), str, System.lineSeparator()));
                                 try {
                                     String fileName = "history_" + myNick + ".txt";
