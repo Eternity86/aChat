@@ -28,7 +28,7 @@ class MainServer {
 
             while (true) {
                 socket = server.accept();
-                socket.setSoTimeout(120000);
+                socket.setSoTimeout(180000); // по прошествии 3-х минут бездействия пользователь отключается от сервера
                 new ClientHandler(this, socket);
                 System.out.println("Клиент инициировал подключение!");
             }
