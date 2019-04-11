@@ -1,8 +1,10 @@
 package ru.aChat.home.server;
 
 import java.sql.*;
+import java.util.logging.Logger;
 
 class AuthService {
+    private static final Logger AUTH_SERVICE_LOGGER = Logger.getLogger(AuthService.class.getName());
     private static final String JDBC_DRIVER = "org.sqlite.JDBC";
     private static Connection connection;
     private static Statement stmt;
@@ -11,11 +13,12 @@ class AuthService {
         try {
             Class.forName(JDBC_DRIVER);
             connection = DriverManager.getConnection(org.sqlite.JDBC.PREFIX + "users.db");
-            System.out.println("Соединение с БД установлено!");
+            AUTH_SERVICE_LOGGER.info("Соединение с БД установлено!");
             stmt = connection.createStatement();
-            System.out.println("БД готова для получения SQL-запросов!");
+            AUTH_SERVICE_LOGGER.info("БД готова для получения SQL-запросов!");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
+            AUTH_SERVICE_LOGGER.warning("Ошибка при установке соединения с БД");
         }
     }
 
@@ -32,6 +35,7 @@ class AuthService {
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            AUTH_SERVICE_LOGGER.warning("Ошибка при добавлении нового пользователя");
         }
 //        String sql = String.format("INSERT INTO USERS (login, password, nickname)" +
 //                "VALUES ('%s','%s','%s')", login, pass.hashCode(), nick);
@@ -49,7 +53,7 @@ class AuthService {
 //        }
     }
 
-    public static String getNickByLoginAndPass(String login, String pass) {
+    static String getNickByLoginAndPass(String login, String pass) {
         String sql = String.format("SELECT nickname, password FROM main" +
                 " WHERE login = '%s'", login);
         try {
@@ -66,6 +70,7 @@ class AuthService {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            AUTH_SERVICE_LOGGER.warning("Ошибка при получении ника пользователя при авторизации");
         }
         return null;
     }
@@ -73,9 +78,10 @@ class AuthService {
     static void disconnect() {
         try {
             connection.close();
-            System.out.println("Соединение с БД закрыто!");
+            AUTH_SERVICE_LOGGER.info("Соединение с БД закрыто!");
         } catch (SQLException e) {
             e.printStackTrace();
+            AUTH_SERVICE_LOGGER.warning("Ошибка при закрытии соединения с БД");
         }
     }
 
