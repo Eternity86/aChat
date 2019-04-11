@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="vboxMain" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="450.0" minWidth="500.0" prefHeight="450.0" prefWidth="610.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.aChat.home.client.Controller">
+    <MenuBar VBox.vgrow="ALWAYS">
+        <Menu mnemonicParsing="false" text="Файл">
+            <MenuItem mnemonicParsing="false" text="Подключиться к..." />
+            <MenuItem mnemonicParsing="false" onAction="#disconnectServer" text="Отключиться" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" onAction="#closeApp" text="Выход" />
+        </Menu>
+        <Menu mnemonicParsing="false" text="Помощь">
+            <MenuItem mnemonicParsing="false" onAction="#showAbout" text="О программе" />
+        </Menu>
+    </MenuBar>
+    <HBox prefHeight="318.0" prefWidth="500.0" VBox.vgrow="ALWAYS">
+        <VBox prefHeight="383.0" prefWidth="137.0">
+            <HBox.margin>
+                <Insets left="5.0" />
+            </HBox.margin>
+            <HBox prefHeight="37.0" prefWidth="137.0">
+                <Label fx:id="labelUsers" prefHeight="47.0" prefWidth="83.0" text="Участники:" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+                    <HBox.margin>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                    </HBox.margin>
+                    <font>
+                        <Font name="Arial Narrow" size="13.0" />
+                    </font>
+                </Label>
+                <Label fx:id="labelUserCount" prefHeight="33.0" prefWidth="71.0" text="0" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+                    <HBox.margin>
+                        <Insets bottom="2.0" right="2.0" top="2.0" />
+                    </HBox.margin>
+                    <font>
+                        <Font name="Arial Narrow" size="13.0" />
+                    </font>
+                </Label>
+            </HBox>
+            <ListView fx:id="userList" focusTraversable="false" prefHeight="282.0" prefWidth="95.0" style="-fx-border-color: #61a2b1; -fx-border-radius: 4;" VBox.vgrow="ALWAYS">
+                <VBox.margin>
+                    <Insets bottom="2.0" />
+                </VBox.margin>
+            </ListView>
+        </VBox>
+        <TextArea fx:id="textArea" accessibleRole="LIST_VIEW" editable="false" focusTraversable="false" pickOnBounds="false" prefHeight="270.0" prefWidth="400.0" style="-fx-background-color: #61a2b1; -fx-border-radius: 4;" wrapText="true" HBox.hgrow="ALWAYS">
+            <HBox.margin>
+                <Insets bottom="2.0" left="5.0" right="5.0" top="5.0" />
+            </HBox.margin>
+            <font>
+                <Font name="Comic Sans MS" size="12.0" />
+            </font>
+        </TextArea>
+    </HBox>
+    <HBox fx:id="bottomPanel" managed="false" prefHeight="31.0" prefWidth="482.0" visible="false">
+        <TextField fx:id="textField" minHeight="31.0" onAction="#sendMsg" prefHeight="35.0" prefWidth="510.0" promptText="Введите сообщение..." stylesheets="@view/styles/style.css" HBox.hgrow="ALWAYS">
+            <HBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="2.0" />
+            </HBox.margin>
+            <font>
+                <Font name="Arial Narrow" size="18.0" />
+            </font>
+        </TextField>
+        <Button fx:id="btnSend" defaultButton="true" minHeight="30.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#sendMsg" prefHeight="30.0" prefWidth="85.0" stylesheets="@view/styles/style.css" text="Отправить" textAlignment="JUSTIFY" underline="true" HBox.hgrow="ALWAYS">
+            <HBox.margin>
+                <Insets bottom="5.0" right="5.0" top="2.0" />
+            </HBox.margin>
+            <font>
+                <Font name="Comic Sans MS" size="12.0" />
+            </font>
+        </Button>
+    </HBox>
+    <HBox fx:id="upperPanel">
+        <TextField fx:id="loginField" maxHeight="30.0" minHeight="30.0" promptText="Логин..." stylesheets="@view/styles/style.css" HBox.hgrow="ALWAYS">
+            <HBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="2.0" />
+            </HBox.margin></TextField>
+        <PasswordField fx:id="passField" maxHeight="30.0" minHeight="30.0" onAction="#tryToAuth" promptText="Пароль..." stylesheets="@view/styles/style.css" HBox.hgrow="ALWAYS">
+            <HBox.margin>
+                <Insets right="5.0" top="2.0" />
+            </HBox.margin></PasswordField>
+        <Button fx:id="btnLogin" minHeight="30.0" onAction="#tryToAuth" prefHeight="30.0" prefWidth="85.0" stylesheets="@view/styles/style.css" text="Войти" underline="true" HBox.hgrow="ALWAYS">
+            <HBox.margin>
+                <Insets bottom="5.0" right="5.0" top="2.0" />
+            </HBox.margin></Button>
+    </HBox>
+</VBox>
