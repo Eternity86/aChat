@@ -5,10 +5,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Objects;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 class MainServer {
-
+    private static final Logger MAIN_SERVER_LOGGER = Logger.getLogger(MainServer.class.getName());
     private static final int SERVER_PORT = 8189;
+    private static final int DISCONNECT_TIMEOUT = 10000;
 
     private Vector<ClientHandler> clients;
 
@@ -24,17 +26,17 @@ class MainServer {
         try {
             AuthService.connect();
             server = new ServerSocket(SERVER_PORT);
-            System.out.printf("Сервер %s запущен! Ожидаем подключения...\n", String.valueOf(server.getLocalSocketAddress()));
+            MAIN_SERVER_LOGGER.info("Сервер " + server.getLocalSocketAddress() + " запущен! Ожидаем подключения...");
 
             while (true) {
                 socket = server.accept();
-                socket.setSoTimeout(180000); // по прошествии 3-х минут бездействия пользователь отключается от сервера
+                socket.setSoTimeout(DISCONNECT_TIMEOUT); // по прошествии 3-х минут бездействия пользователь отключается от сервера
                 new ClientHandler(this, socket);
-                System.out.println("Клиент инициировал подключение!");
+                MAIN_SERVER_LOGGER.info("Клиент инициировал подключение!");
             }
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Время ожидания вышло!");
+            MAIN_SERVER_LOGGER.warning("Время ожидания вышло!");
         } finally {
             try {
                 Objects.requireNonNull(socket).close();
@@ -83,14 +85,13 @@ class MainServer {
 
     void subscribe(ClientHandler client) {
         clients.add(client);
-        System.out.println(client.getNick() + " добавлен в список пользователей");
+        MAIN_SERVER_LOGGER.info(client.getNick() + " добавлен в список пользователей");
         broadcastClientsList();
     }
 
     void unsubscribe(ClientHandler client) {
         clients.remove(client);
-        System.out.println(client.getNick() + " удалён из списка пользователей");
+        MAIN_SERVER_LOGGER.info(client.getNick() + " удалён из списка пользователей");
         broadcastClientsList();
     }
-
 }
