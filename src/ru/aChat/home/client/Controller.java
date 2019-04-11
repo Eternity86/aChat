@@ -10,6 +10,7 @@ import java.io.*;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 public class Controller {
 
@@ -103,7 +104,7 @@ public class Controller {
                     }
                     // цикл для работы
                     while (true) {
-                        if(!socket.isClosed()) {
+                        if(!Objects.requireNonNull(socket).isClosed() || socket != null) {
                             String str = in.readUTF();
                             if (str.startsWith("/")) {
                                 if (str.equals("/serverClosed")) {
@@ -235,5 +236,4 @@ public class Controller {
         alert.setContentText("Чат на JavaFX");
         alert.showAndWait();
     }
-
 }
